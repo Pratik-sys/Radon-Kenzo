@@ -136,4 +136,4 @@ function get-set-forall() {
     fi
 
     # Set scheduler
-    write /sys/block/mmcblk0/queue/scheduler fiops
+    write /sys/block/mmcblk0/queue/scheduler cfq

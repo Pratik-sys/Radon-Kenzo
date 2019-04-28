@@ -189,7 +189,7 @@ echo "write /sys/module/cpu_boost/parameters/input_boost_freq \"$BOOST\"" >> $CO
 echo "write /sys/module/cpu_boost/parameters/input_boost_ms 40" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# SET IO SCHEDULER" >> $CONFIGFILE
-echo "setprop sys.io.scheduler \"maple\"" >> $CONFIGFILE
+echo "setprop sys.io.scheduler \"cfq\"" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# TOUCH BOOST" >> $CONFIGFILE
 echo "write /sys/module/msm_performance/parameters/touchboost $TBST" >> $CONFIGFILE
