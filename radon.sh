@@ -21,7 +21,7 @@ red='\033[0;31m'
 gre='\e[0;32m'
 echo -e ""
 echo -e "$gre ====================================\n\n Welcome to Radon building program !\n\n ===================================="
-echo -e "$gre \n 1    .Build radon for Treble Rom\n\n Other.Build radon for normal Rom\n"
+echo -e "$gre \n 1.Build radon for Treble Rom\n\n 2.Build radon for normal Rom\n"
 echo -n " Enter your choice:"
 read pt
 echo -e "$gre \n 1.Build radon without qc\n\n 2.Build radon with qc\n"
@@ -36,7 +36,7 @@ Start=$(date +"%s")
 DTBTOOL=$KERNEL_DIR/dtbTool
 cd $KERNEL_DIR
 export ARCH=arm64
-export CROSS_COMPILE="/home/pzqqt/bin/gcc-linaro-6.4.1-2018.04-rc1-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+export CROSS_COMPILE="/home/code/gcc-linaro-6.4.1-2018.04-rc1-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-"
 echo -e "$yellow Running make clean before compiling \n$white"
 make clean > /dev/null
 if [ $qc == 2 ]; then
@@ -49,8 +49,8 @@ if [ $pt != 1 ]; then
 git apply pt.patch
 fi
 make lineageos_kenzo_defconfig
-export KBUILD_BUILD_HOST="lenovo"
-export KBUILD_BUILD_USER="pzqqt"
+export KBUILD_BUILD_HOST="DeathNote_27"
+export KBUILD_BUILD_USER="Pratik Pithore"
 make -j8
 time=$(date +"%d-%m-%y-%T")
 $DTBTOOL -2 -o $KERNEL_DIR/arch/arm64/boot/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
@@ -62,7 +62,7 @@ fi
 dt_img_name="dt"$pt_in$qc".img"
 mv $KERNEL_DIR/arch/arm64/boot/dt.img $KERNEL_DIR/build/tools/$dt_img_name
 zimage=$KERNEL_DIR/arch/arm64/boot/Image
-if ! [ -a $zimage ];
+if ! [ -f $zimage ];
 then
 echo -e "$red << Failed to compile zImage, fix the errors first >>$white"
 else
@@ -70,10 +70,10 @@ cp $KERNEL_DIR/arch/arm64/boot/Image $KERNEL_DIR/build/tools/Image1
 cd $KERNEL_DIR/build
 rm *.zip > /dev/null 2>&1
 echo -e "$yellow\n Build succesful, generating flashable zip now \n $white"
-zip -r Radon-Kenzo-Cm-Or.zip * > /dev/null
+zip -r Radon-Kenzo-pie.zip * > /dev/null
 End=$(date +"%s")
 Diff=$(($End - $Start))
-echo -e "$yellow $KERNEL_DIR/build/Radon-Kenzo-Cm-Or.zip \n$white"
+echo -e "$yellow $KERNEL_DIR/build/Radon-Kenzo-pie.zip \n$white"
 echo -e "$gre << Build completed in $(($Diff / 60)) minutes and $(($Diff % 60)) seconds, variant($qc) >> \n $white"
 fi
 cd $KERNEL_DIR
