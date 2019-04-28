@@ -52,7 +52,7 @@ viewbox(
   13.Upstream LowMemoryKiller 
   14.Upstream perf
   15.Upstream USB-Gadgets
-  16.Re-add DTS Eagle (do check it) 
+  16.Re-added DTS Eagle (do check it) 
   17.OC GPU @ 710 
   18.Improve wake gestures nad many xD
 ",
@@ -72,7 +72,7 @@ selectbox(
 );
 
 selectbox(
-  "\n\nDt2w Options","<@center><b>\n\n\n\n\n\n\nRemember !\nKeeping dt2w enabled will consume little more battery.\n</b></@>","","dt2w.prop",
+  "\n\nDT2W Options","<@center><b>\n\n\n\n\n\n\nRemember !\nKeeping dt2w enabled will consume little more battery.\n</b></@>","","dt2w.prop",
   "Yes, enable it (with vibration)","",0,
   "Yes, enable it (without vibration)","",0,
   "No, disable it (saves battery)","",0,
@@ -124,7 +124,7 @@ selectbox(
 );
 
 selectbox(
-  "\n\Thermal engine","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
+  "\n\nThermal engine","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
   "Yes, old thermal","",0,
   "No, new thermal","",1
 );
