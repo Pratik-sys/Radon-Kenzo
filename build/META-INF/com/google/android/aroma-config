@@ -1,6 +1,6 @@
 ini_set("rom_name",             "Radon");
 ini_set("rom_version",          "V6.3-rebuild-7.1");
-ini_set("rom_author",           "Umang96 & Pzqqt");
+ini_set("rom_author",           "Umang96 & Pzqqt & Pratik");
 ini_set("rom_device",           "Kenzo");
 ini_set("rom_date",             "2018.11.29");
 
@@ -55,7 +55,7 @@ viewbox(
 selectbox(
   "\n\nWhich type of Rom are you using?","<@center><b>\n\n\n\n\n\n\nPlease choose the correct one.\n</b></@>","","pt.prop",
   "I‘m using Treble Rom","",0,
-  "I‘m using Normal Oreo Rom","",1
+  "I‘m using Normal Pie Rom","",1
 );
 
 selectbox(
@@ -65,7 +65,7 @@ selectbox(
 );
 
 selectbox(
-  "\n\nDo you need dt2w ?","<@center><b>\n\n\n\n\n\n\nRemember !\nKeeping dt2w enabled will consume little more battery.\n</b></@>","","dt2w.prop",
+  "\n\nDt2w Options","<@center><b>\n\n\n\n\n\n\nRemember !\nKeeping dt2w enabled will consume little more battery.\n</b></@>","","dt2w.prop",
   "Yes, enable it (with vibration)","",0,
   "Yes, enable it (without vibration)","",0,
   "No, disable it (saves battery)","",0,
@@ -110,14 +110,14 @@ selectbox(
 );
 
 selectbox(
-  "\n\nWant enhanced colors ?","<@center><b>\n\n\n\n\n\n\nIf you choose yes then display colors will be tuned. Keep livedisplay off to see real colors.\n</b></@>","","color.prop",
+  "\n\nEnhanced Colors","<@center><b>\n\n\n\n\n\n\nIf you choose yes then display colors will be tuned. Keep livedisplay off to see real colors.\n</b></@>","","color.prop",
   "Yes, enhanced colors (warm)","",1,
   "Yes, enhanced colors (cool)","",0,
   "No, standard colors","",0
 );
 
 selectbox(
-  "\n\nWant old thermal engine ?","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
+  "\n\Thermal engine","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
   "Yes, old thermal","",0,
   "No, new thermal","",1
 );
