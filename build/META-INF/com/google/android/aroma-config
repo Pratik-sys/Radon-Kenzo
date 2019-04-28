@@ -1,8 +1,8 @@
 ini_set("rom_name",             "Radon");
-ini_set("rom_version",          "V6.3-rebuild-7.1");
+ini_set("rom_version",          "V6.3-rebuild-7.2");
 ini_set("rom_author",           "Umang96 & Pzqqt & Pratik");
 ini_set("rom_device",           "Kenzo");
-ini_set("rom_date",             "2018.11.29");
+ini_set("rom_date",             "2019.04.28");
 
 ini_set("force_colorspace","rgba");
 #ini_set("dp","6");
@@ -35,19 +35,26 @@ viewbox(
   "<@center>\n\nNotice</@>",
   "\n\n\n\n
   
-<b>What's new?</b>
+<b>ChangeLog</b>
 
   1.Rebuild with Linaro 6.4.1
-  2.Support new device tree
-  3.New jack detection
-  4.Netlink mode select
-  5.Fixed for replaced focaltech touchscreen devices
-  6.Initial import of DTS-Eagle driver
-  7.Import wireguard driver
-  8.Support Treble Roms
-  9.Disable some tracing(Thanks to psndna88)
-  10.Added Cultivation & Darkness CPU Governor
-  11.Other some optimizations
+  2.set Readhead to 128
+  3.Added Bioshock governor
+  4.Introduce STATE_NOTIFIER driver
+  5.Disabled the arch power by default
+  6.Added frandom driver
+  7.Added support for CRYPTO_SPECK
+  8.Selinux commits from Escrima 
+  9.Added Spectrum Support
+  10.Backport ZRAM drivers from 4.18 kernel
+  11.Upstream ZRAM
+  12.Upstream ZSWAP
+  13.Upstream LowMemoryKiller 
+  14.Upstream perf
+  15.Upstream USB-Gadgets
+  16.Re-add DTS Eagle (do check it) 
+  17.OC GPU @ 710 
+  18.Improve wake gestures nad many xD
 ",
   "@welcome"
 );
