@@ -58,7 +58,9 @@ fi
 if ! [ -f /system/etc/radon.sh ]; then
 cp /tmp/radon.sh /system/etc/radon.sh
 fi
-chmod 644 /system/etc/radon.sh
+chmod 0755 /system/etc/radon.sh
+cp -rf /tmp/thermal-engine.conf /system/vendor/etc
+chmod 0644 /system/vendor/etc/thermal-engine.conf
 cp -f /tmp/cpio /sbin/cpio
 cd /tmp/
 /sbin/busybox dd if=/dev/block/bootdevice/by-name/boot of=./boot.img
@@ -78,8 +80,6 @@ if [ $(grep -c "import /init.spectrum.rc" /tmp/ramdisk/init.rc) == 0 ]; then
    sed -i "/import \/init\.\${ro.hardware}\.rc/aimport /init.spectrum.rc" /tmp/ramdisk/init.rc
 fi
 # COMPATIBILITY FIXES START
-cp /tmp/init.qcom.post_boot.sh /system/etc/init.qcom.post_boot.sh
-chmod 644 /system/etc/init.qcom.post_boot.sh
 if [ -f /tmp/ramdisk/fstab.qcom ];
 then
 if ([ "`grep "context=u:object_r:firmware_file:s0" /tmp/ramdisk/fstab.qcom`" ]);
