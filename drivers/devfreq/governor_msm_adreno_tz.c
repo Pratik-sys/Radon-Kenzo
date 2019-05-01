@@ -20,6 +20,7 @@
 #include <linux/ftrace.h>
 #include <linux/mm.h>
 #include <linux/msm_adreno_devfreq.h>
+#include <linux/display_state.h>
 #include <asm/cacheflush.h>
 #include <soc/qcom/scm.h>
 #include "governor.h"
@@ -63,7 +64,10 @@ static DEFINE_SPINLOCK(suspend_lock);
 
 #define TAG "msm_adreno_tz: "
 
+#if 1
 static unsigned int adrenoboost = 0;
+#endif
+
 static u64 suspend_time;
 static u64 suspend_start;
 static unsigned long acc_total, acc_relative_busy;
@@ -74,8 +78,31 @@ static void do_partner_stop_event(struct work_struct *work);
 static void do_partner_suspend_event(struct work_struct *work);
 static void do_partner_resume_event(struct work_struct *work);
 
+/* Display and suspend state booleans */ 
+static bool display_on;
+static bool suspended = false;
+
 static struct workqueue_struct *workqueue;
 
+/*
+ * Returns GPU suspend time in millisecond.
+ */
+u64 suspend_time_ms(void)
+{
+	u64 suspend_sampling_time;
+	u64 time_diff = 0;
+
+	if (suspend_start == 0)
+		return 0;
+
+	suspend_sampling_time = (u64)ktime_to_ms(ktime_get());
+	time_diff = suspend_sampling_time - suspend_start;
+	/* Update the suspend_start sample again */
+	suspend_start = suspend_sampling_time;
+	return time_diff;
+}
+
+#if 1
 static ssize_t adrenoboost_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -98,27 +125,7 @@ static ssize_t adrenoboost_save(struct device *dev,
 
 	return count;
 }
-
-static DEVICE_ATTR(adrenoboost, 0644,
-		adrenoboost_show, adrenoboost_save);
-
-/*
- * Returns GPU suspend time in millisecond.
- */
-u64 suspend_time_ms(void)
-{
-	u64 suspend_sampling_time;
-	u64 time_diff = 0;
-
-	if (suspend_start == 0)
-		return 0;
-
-	suspend_sampling_time = (u64)ktime_to_ms(ktime_get());
-	time_diff = suspend_sampling_time - suspend_start;
-	/* Update the suspend_start sample again */
-	suspend_start = suspend_sampling_time;
-	return time_diff;
-}
+#endif
 
 static ssize_t gpu_load_show(struct device *dev,
 		struct device_attribute *attr,
@@ -165,6 +172,11 @@ static ssize_t suspend_time_show(struct device *dev,
 	return snprintf(buf, PAGE_SIZE, "%llu\n", time_diff);
 }
 
+#if 1
+static DEVICE_ATTR(adrenoboost, 0644,
+		adrenoboost_show, adrenoboost_save);
+#endif
+
 static DEVICE_ATTR(gpu_load, 0444, gpu_load_show, NULL);
 
 static DEVICE_ATTR(suspend_time, 0444,
@@ -174,6 +186,9 @@ static DEVICE_ATTR(suspend_time, 0444,
 static const struct device_attribute *adreno_tz_attr_list[] = {
 		&dev_attr_gpu_load,
 		&dev_attr_suspend_time,
+#if 1
+		&dev_attr_adrenoboost,
+#endif
 		NULL
 };
 
@@ -331,6 +346,15 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	*freq = stats.current_frequency;
 	*flag = 0;
 
+	/*
+	 * Force to use & record as min freq when system has
+	 * entered pm-suspend or screen-off state.
+	 */
+	if (suspended || !display_on) {
+		*freq = devfreq->profile->freq_table[devfreq->profile->max_state - 1];
+		return 0;
+	}
+
 #ifdef CONFIG_ADRENO_IDLER
 	if (adreno_idler(stats, devfreq, freq)) {
 		/* adreno_idler has asked to bail out now */
@@ -339,15 +363,16 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 #endif
 
 	priv->bin.total_time += stats.total_time;
-
+#if 1
 	// scale busy time up based on adrenoboost parameter, only if MIN_BUSY exceeded...
 	if ((unsigned int)(priv->bin.busy_time + stats.busy_time) >= MIN_BUSY) {
 		priv->bin.busy_time += stats.busy_time * (1 + (adrenoboost*3)/2);
 	} else {
 		priv->bin.busy_time += stats.busy_time;
-	}	
-
+	}
+#else
 	priv->bin.busy_time += stats.busy_time;
+#endif
 
 	/* Update the GPU load statistics */
 	compute_work_load(&stats, priv, devfreq);
@@ -491,8 +516,6 @@ static int tz_start(struct devfreq *devfreq)
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
 		device_create_file(&devfreq->dev, adreno_tz_attr_list[i]);
 
-	device_create_file(&devfreq->dev, &dev_attr_adrenoboost);
-
 	return kgsl_devfreq_add_notifier(devfreq->dev.parent, &priv->nb);
 }
 
@@ -502,8 +525,6 @@ static int tz_stop(struct devfreq *devfreq)
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 
 	kgsl_devfreq_del_notifier(devfreq->dev.parent, &priv->nb);
-
-	device_remove_file(&devfreq->dev, &dev_attr_adrenoboost);
 
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
 		device_remove_file(&devfreq->dev, adreno_tz_attr_list[i]);
@@ -521,9 +542,12 @@ static int tz_suspend(struct devfreq *devfreq)
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 	unsigned int scm_data[2] = {0, 0};
 	__secure_tz_reset_entry2(scm_data, sizeof(scm_data), priv->is_64);
+	display_on = is_display_on();
+	suspended = true;
 
 	priv->bin.total_time = 0;
 	priv->bin.busy_time = 0;
+
 	return 0;
 }
 
@@ -535,8 +559,6 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 					(devfreq->profile),
 					struct msm_adreno_extended_profile,
 					profile);
-	BUG_ON(devfreq == NULL);
-
 	switch (event) {
 	case DEVFREQ_GOV_START:
 		result = tz_start(devfreq);
@@ -566,6 +588,8 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 	case DEVFREQ_GOV_RESUME:
 		spin_lock(&suspend_lock);
 		suspend_time += suspend_time_ms();
+		display_on = is_display_on();
+		suspended = false;
 		/* Reset the suspend_start when gpu resumes */
 		suspend_start = 0;
 		spin_unlock(&suspend_lock);
