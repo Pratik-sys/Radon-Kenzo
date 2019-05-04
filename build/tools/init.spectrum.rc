@@ -23,46 +23,28 @@ on property:persist.spectrum.profile=0
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 691200
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1401600
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 100
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-	write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 80000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1401600
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1382400
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "50 1017600:60 1190400:70 1305600:80 1382400:90 1401600:95"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost 0
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1804800
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "19000 1382400:39000"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-	write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 80000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "85 1382400:90 1747200:95"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1305600
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "74 998400:73 1056000:64 1113600:80 1190400:61 1248000:69 1305600:64 1382400:74 1612800:69 1747200:67 1804800:72"
     write /sys/kernel/cpu_input_boost/enabled 1
 	write /sys/kernel/cpu_input_boost/ib_freqs "1017600 883200"
 	write /sys/kernel/cpu_input_boost/ib_duration_ms 64
-	write /sys/kernel/cpu_input_boost/fb_duration_ms 1000
+	write /sys/kernel/cpu_input_boost/fb_duration_ms 64
     write /sys/module/msm_performance/parameters/touchboost 0
     write /sys/module/adreno_idler/parameters/adreno_idler_active N
     write /sys/class/kgsl/kgsl-3d0/max_gpuclk 600000000
-    write /sys/block/mmcblk0/queue/scheduler cfq
-    write /sys/block/mmcblk1/queue/scheduler cfq
+    write /sys/block/mmcblk0/queue/scheduler maple
+    write /sys/block/mmcblk1/queue/scheduler maple
     write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq 266666667
-    write /sys/module/msm_thermal/parameters/enabled y
-    write /sys/module/msm_thermal/parameters/temp_threshold 45
-    write /sys/module/msm_thermal/parameters/core_limit_temp_degC 65
     write /proc/sys/vm/swappiness 40
     write /proc/sys/vm/vfs_cache_pressure 100
 
@@ -81,9 +63,6 @@ on property:persist.spectrum.profile=1
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1401600
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "40 1017600:50 1190400:60 1305600:70 1382400:80 1401600:90"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1804800
@@ -91,9 +70,6 @@ on property:persist.spectrum.profile=1
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "75 1382400:80 1747200:85"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1
     write /sys/kernel/cpu_input_boost/enabled 1
 	write /sys/kernel/cpu_input_boost/ib_freqs "1305600 1305600"
 	write /sys/kernel/cpu_input_boost/ib_duration_ms 1000
@@ -101,16 +77,10 @@ on property:persist.spectrum.profile=1
     write /sys/module/msm_performance/parameters/touchboost 1
     write /sys/module/adreno_idler/parameters/adreno_idler_active N
     write /sys/class/kgsl/kgsl-3d0/max_gpuclk 600000000
-    write /sys/block/mmcblk0/queue/scheduler fiops
-    write /sys/block/mmcblk1/queue/scheduler fiops
+    write /sys/block/mmcblk0/queue/scheduler maple
+    write /sys/block/mmcblk1/queue/scheduler maple
     write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 1
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq 266666667
-    write /sys/module/msm_thermal/parameters/enabled y
-    write /sys/module/msm_thermal/parameters/temp_threshold 50
-    write /sys/module/msm_thermal/parameters/core_limit_temp_degC 70
     write /proc/sys/vm/swappiness 60
     write /proc/sys/vm/vfs_cache_pressure 100
 
@@ -123,23 +93,19 @@ on property:persist.spectrum.profile=2
     write /sys/devices/system/cpu/cpu4/online 1
     write /sys/devices/system/cpu/cpu5/online 1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 691200
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1305600
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 100
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1305600
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1190400
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 60000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "75 1017600:85 1190400:95"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
-	write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1612800
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 100
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1612800
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "90 1305600:95"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1
-	write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1056000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 60000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "90 1056000:95"
     write /sys/kernel/cpu_input_boost/enabled 0
 	write /sys/kernel/cpu_input_boost/ib_freqs "691200 883200"
 	write /sys/kernel/cpu_input_boost/ib_duration_ms 0
@@ -151,12 +117,6 @@ on property:persist.spectrum.profile=2
     write /sys/block/mmcblk1/queue/scheduler noop
     write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
     write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_pwrlevel 6
-    write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq 266666667
-    write /sys/module/msm_thermal/parameters/enabled y
-    write /sys/module/msm_thermal/parameters/temp_threshold 40
-    write /sys/module/msm_thermal/parameters/core_limit_temp_degC 60
     write /proc/sys/vm/swappiness 20
     write /proc/sys/vm/vfs_cache_pressure 40
 
@@ -177,21 +137,20 @@ on property:persist.spectrum.profile=3
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 80
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1401600
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "50 1305600:70 1401600:80" 
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 80
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "40 1017600:50 1190400:60 1305600:70 1382400:75 1401600:80"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1804800
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 1382400:75 1804800:80"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "74 998400:73 1056000:64 1113600:80 1190400:61 1248000:69 1305600:64 1382400:74 1612800:69 1747200:67 1804800:72"
     write /sys/kernel/cpu_input_boost/enabled 1
 	write /sys/kernel/cpu_input_boost/ib_freqs "1401600 1612800"
 	write /sys/kernel/cpu_input_boost/ib_duration_ms 1000
 	write /sys/kernel/cpu_input_boost/fb_duration_ms 1000
     write /sys/module/adreno_idler/parameters/adreno_idler_active N
     write /sys/class/kgsl/kgsl-3d0/max_gpuclk 600000000
-    write /sys/block/mmcblk0/queue/scheduler noop
-    write /sys/block/mmcblk1/queue/scheduler noop
+    write /sys/block/mmcblk0/queue/scheduler maple
+    write /sys/block/mmcblk1/queue/scheduler maple
 	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
 	write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 2
+	write /proc/sys/vm/swappiness 60
+    write /proc/sys/vm/vfs_cache_pressure 100

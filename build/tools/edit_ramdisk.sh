@@ -3,52 +3,54 @@
 CONFIGFILE="/tmp/init.radon.rc"
 INTERACTIVE=$(cat /tmp/aroma/interactive.prop | cut -d '=' -f2)
 if [ $INTERACTIVE == 1 ]; then
-TLS="50 1017600:60 1190400:70 1305600:80 1382400:90 1401600:95"
-TLB="85 1382400:90 1747200:95"
+TLS="80 400000:33 691200:25 806400:50 1017600:65 1190400:70 1305600:85 1382400:90 1401600:92"
+TLB="74 998400:73 1056000:64 1113600:80 1190400:61 1248000:69 1305600:64 1382400:74 1612800:69 1747200:67 1804800:72"
 BOOSTENB=1
 BOOST="1017600 883200"
 BOOSTMS=64
-HSFS=1401600
-HSFB=1382400
+HSFS=1382400
+HSFB=1305600
 FMS=691200
 FMB=883200
 FMAS=1401600
 FMAB=1804800
-TR=20000
+TR=40000
 AID=N
 ABST=0
 TBST=1
-GHLS=100
+GHLS=85
 GHLB=90
-SWAP=30
+SWAP=40
 VFS=100
 GLVL=6
 GFREQ=266666667
+IOSCHED=maple
 elif [ $INTERACTIVE == 2 ]; then
-TLS="75 1017600:85 1190400:95"
-TLB="90 1305600:95"
+TLS="80 1017600:85 1190400:99"
+TLB="90 1056600:99"
 BOOSTENB=0
 BOOST="691200 883200"
 BOOSTMS=0
-HSFS=1305600
-HSFB=1612600
+HSFS=1190400
+HSFB=1056000
 FMS=691200
 FMB=883200
 FMAS=1305600
 FMAB=1612600
-TR=40000
+TR=60000
 AID=Y
 ABST=0
 TBST=0
-GHLS=100
-GHLB=100
+GHLS=99
+GHLB=99
 SWAP=20
 VFS=40
 GLVL=6
 GFREQ=266666667
+IOSCHED=noop
 elif [ $INTERACTIVE == 3 ]; then
-TLS="40 1017600:50 1190400:60 1305600:70 1382400:80 1401600:90"
-TLB="75 1382400:80 1747200:85"
+TLS="40 1017600:50 1190400:60 1305600:70 1382400:75 1401600:80"
+TLB="74 998400:73 1056000:64 1113600:80 1190400:61 1248000:69 1305600:64 1382400:74 1612800:69 1747200:67 1804800:72"
 BOOSTENB=1
 BOOST="1305600 1305600"
 BOOSTMS=1000
@@ -62,12 +64,13 @@ TR=20000
 AID=N
 ABST=1
 TBST=1
-GHLS=95
-GHLB=80
+GHLS=80
+GHLB=85
 SWAP=40
 VFS=100
 GLVL=6
 GFREQ=266666667
+IOSCHED=maple
 fi
 DT2W=$(cat /tmp/aroma/dt2w.prop | cut -d '=' -f2)
 if [ $DT2W == 1 ]; then
@@ -112,16 +115,8 @@ echo "# SWAPPINESS AND VFS CACHE PRESSURE" >> $CONFIGFILE
 echo "write /proc/sys/vm/swappiness $SWAP" >> $CONFIGFILE
 echo "write /proc/sys/vm/vfs_cache_pressure $VFS" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "# Enable sched boost again" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_boost 1" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "# Reconfigure cpuset to optimum values" >> $CONFIGFILE
-echo "write /dev/cpuset/foreground/cpus 0-4" >> $CONFIGFILE
-echo "write /dev/cpuset/foreground/boost/cpus 4-5" >> $CONFIGFILE
-echo "# Enable 2 cores for background to improve app switching and usability" >> $CONFIGFILE
-echo "write /dev/cpuset/background/cpus 0-1" >> $CONFIGFILE
-echo "write /dev/cpuset/system-background/cpus 0-3" >> $CONFIGFILE
-echo "write /dev/cpuset/top-app/cpus 0-5" >> $CONFIGFILE
+echo "# Disable sched boost" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE
 if [ $DT2W -ne 4 ]; then
 echo "" >> $CONFIGFILE
 echo "# DT2W" >> $CONFIGFILE
@@ -186,30 +181,34 @@ echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor \"interactive\
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load $GHLS" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 80000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq $HSFS" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads \"$TLS\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 50000" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq $FMS" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq $FMAS" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 166667" >> $CONFIGFILE
+
 echo "" >> $CONFIGFILE
 echo "# TWEAK A72 CLUSTER GOVERNOR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/online 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor \"interactive\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay \"19000 1382400:39000\"" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load $GHLB" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq $HSFB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads \"$TLB\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 30000" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq $FMB" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq $FMAB" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 20000" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# GPU SETTINGS" >> $CONFIGFILE
 echo "write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel $GLVL" >> $CONFIGFILE
@@ -221,9 +220,6 @@ echo "write /sys/kernel/cpu_input_boost/enabled $BOOSTENB" >> $CONFIGFILE
 echo "write /sys/kernel/cpu_input_boost/ib_freqs \"$BOOST\"" >> $CONFIGFILE
 echo "write /sys/kernel/cpu_input_boost/ib_duration_ms $BOOSTMS" >> $CONFIGFILE
 echo "write /sys/kernel/cpu_input_boost/fb_duration_ms $BOOSTMS" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "# SET IO SCHEDULER" >> $CONFIGFILE
-echo "setprop sys.io.scheduler \"maple\"" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# TOUCH BOOST" >> $CONFIGFILE
 echo "write /sys/module/msm_performance/parameters/touchboost $TBST" >> $CONFIGFILE
@@ -319,8 +315,33 @@ echo " " >> $CONFIGFILE
 echo "# ENABLE HIGH PERFORMANCE AUDIO MODE" >> $CONFIGFILE
 echo "write /sys/module/snd_soc_msm8x16_wcd/parameters/high_perf_mode 1" >> $CONFIGFILE
 echo " " >> $CONFIGFILE
+echo "# Disable arch power" >> $CONFIGFILE
+echo "write /sys/kernel/sched/arch_power 0" >> $CONFIGFILE
+echo " " >> $CONFIGFILE
+echo "# SET IO SCHEDULER AND READAHEAD" >> $CONFIGFILE
+echo "setprop sys.io.scheduler \"$IOSCHED\"" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/scheduler $IOSCHED" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/iostats 1" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/nr_requests 128" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/read_ahead_kb 128" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/scheduler $IOSCHED" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/iostats 1" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/nr_requests 128" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/read_ahead_kb 128" >> $CONFIGFILE
+echo " " >> $CONFIGFILE
 echo "# RUN USERTWEAKS SERVICE" >> $CONFIGFILE
 echo "start usertweaks" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "# Disable sched boost" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE
+echo "# Reconfigure cpuset to optimum values" >> $CONFIGFILE
+echo "write /dev/cpuset/foreground/cpus 0-4" >> $CONFIGFILE
+echo "write /dev/cpuset/foreground/boost/cpus 4-5" >> $CONFIGFILE
+echo "# Enable 2 cores for background to improve app switching and usability" >> $CONFIGFILE
+echo "write /dev/cpuset/background/cpus 0-1" >> $CONFIGFILE
+echo "write /dev/cpuset/system-background/cpus 0-3" >> $CONFIGFILE
+echo "write /dev/cpuset/top-app/cpus 0-5" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# CONFIGURE ZSWAP " >> $CONFIGFILE
+echo "write /sys/module/zswap/parameters/compressor lz4" >> $CONFIGFILE
+echo "write /sys/module/zswap/parameters/zpool zsmalloc" >> $CONFIGFILE
+echo "write /sys/module/zswap/parameters/max_pool_percent 50" >> $CONFIGFILE
+echo "write /sys/module/zswap/parameters/enabled 1" >> $CONFIGFILE
