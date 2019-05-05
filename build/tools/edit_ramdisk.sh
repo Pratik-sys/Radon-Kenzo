@@ -20,7 +20,7 @@ ABST=0
 TBST=1
 GHLS=85
 GHLB=90
-SWAP=40
+SWAP=30
 VFS=100
 GLVL=6
 GFREQ=266666667
@@ -66,7 +66,7 @@ ABST=1
 TBST=1
 GHLS=80
 GHLB=85
-SWAP=40
+SWAP=30
 VFS=100
 GLVL=6
 GFREQ=266666667
@@ -183,8 +183,8 @@ echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load $GH
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq $HSFS" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads \"$TLS\"" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 50000" >> $CONFIGFILE
@@ -201,7 +201,7 @@ echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load $GH
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq $HSFB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads \"$TLB\"" >> $CONFIGFILE
@@ -238,11 +238,11 @@ echo "write /sys/devices/system/cpu/cpu0/cpufreq/GPU_mV_table \"700 720 760 800 
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/UV_mV_table \"720 740 800 900 960 1000 1030 1040 740 760 780 850 890 950 1000\"" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# Some sched tweaks" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_upmigrate 90" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_downmigrate 85" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_upmigrate 85" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_downmigrate 80" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_use_shadow_scheduling 1" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_shadow_upmigrate 90" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_shadow_downmigrate 85" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_shadow_upmigrate 85" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_shadow_downmigrate 80" >> $CONFIGFILE
 echo "# android background processes are set to nice 10. Never schedule these on the a57s." >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_upmigrate_min_nice 9" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_window_stats_policy 2" >> $CONFIGFILE
@@ -268,12 +268,12 @@ echo "write /proc/sys/kernel/sched_wakeup_load_threshold 110" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_spill_nr_run 10" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_spill_load 100" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_small_task 30" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run 3" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# SET PROPER DEVFREQ GOVERNORS FOR CPU" >> $CONFIGFILE
 echo "write /sys/class/devfreq/mincpubw/governor \"cpufreq\"" >> $CONFIGFILE
@@ -283,12 +283,12 @@ echo "write /sys/class/devfreq/cpubw/bw_hwmon/guard_band_mbps 30" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# HMP Task packing settings for 8956" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_small_task 30" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 20" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 20" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 20" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 20" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 20" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 20" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 25" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 25" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 25" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 25" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 25" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 25" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# Enable LPM Prediction" >> $CONFIGFILE
 echo "write /sys/module/lpm_levels/parameters/lpm_prediction 1" >> $CONFIGFILE
@@ -340,8 +340,4 @@ echo "write /dev/cpuset/background/cpus 0-1" >> $CONFIGFILE
 echo "write /dev/cpuset/system-background/cpus 0-3" >> $CONFIGFILE
 echo "write /dev/cpuset/top-app/cpus 0-5" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "# CONFIGURE ZSWAP " >> $CONFIGFILE
-echo "write /sys/module/zswap/parameters/compressor lz4" >> $CONFIGFILE
-echo "write /sys/module/zswap/parameters/zpool zsmalloc" >> $CONFIGFILE
-echo "write /sys/module/zswap/parameters/max_pool_percent 50" >> $CONFIGFILE
-echo "write /sys/module/zswap/parameters/enabled 1" >> $CONFIGFILE
+echo "write /sys/module/zswap/parameters/enabled 0" >> $CONFIGFILE
