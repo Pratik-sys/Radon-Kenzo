@@ -432,7 +432,7 @@
 		mas_oxili: mas-oxili {
 			cell-id = <MSM_BUS_MASTER_GRAPHICS_3D>;
 			label = "mas-oxili";
-			qcom,buswidth = <16>;
+			qcom,buswidth = <32>;
 			qcom,agg-ports = <2>;
 			qcom,ap-owned;
 			qcom,qport = <16 17>;
