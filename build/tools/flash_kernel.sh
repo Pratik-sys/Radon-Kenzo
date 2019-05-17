@@ -55,12 +55,15 @@ chmod 0644 /system/vendor/lib/libthermalclient.so
 chmod 0644 /system/vendor/lib64/libthermalclient.so
 chmod 0644 /system/vendor/lib64/libthermalioctl.so
 fi
-if ! [ -f /system/etc/radon.sh ]; then
 cp /tmp/radon.sh /system/etc/radon.sh
-fi
 chmod 0755 /system/etc/radon.sh
 cp -rf /tmp/thermal-engine.conf /system/vendor/etc
 chmod 0644 /system/vendor/etc/thermal-engine.conf
+cp -rf /tmp/init.qcom.post_boot.sh /system/vendor/bin
+chmod 0755 /system/vendor/bin/init.qcom.post_boot.sh
+if [ $(grep -c "setprop kernel.tweaks.run_now 1" /system/vendor/bin/init.qcom.post_boot.sh) == 0 ]; then
+	echo "setprop kernel.tweaks.run_now 1" >> /system/vendor/bin/init.qcom.post_boot.sh
+fi
 cp -f /tmp/cpio /sbin/cpio
 cd /tmp/
 /sbin/busybox dd if=/dev/block/bootdevice/by-name/boot of=./boot.img

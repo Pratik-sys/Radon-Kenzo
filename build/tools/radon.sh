@@ -18,10 +18,10 @@
     chmod 0660 /sys/module/lowmemorykiller/parameters/minfree
 
     if [ $MemTotal -gt 2000000 ]; then
-        echo 1 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
+        echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
         echo "18432,23040,27648,32256,55296,80640" > /sys/module/lowmemorykiller/parameters/minfree
     else
-        echo 1 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
+        echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
         echo "16384,20992,24064,30720,46080,66560" > /sys/module/lowmemorykiller/parameters/minfree
 	echo 10 > /proc/sys/vm/dirty_background_ratio
     fi

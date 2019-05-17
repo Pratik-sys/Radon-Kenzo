@@ -16,15 +16,13 @@ FMAS=1401600
 FMAB=1804800
 TR=40000
 AID=N
-ABST=0
+ABST=1
 TBST=1
 GHLS=85
 GHLB=90
-SWAP=30
-VFS=100
-GLVL=6
-GFREQ=266666667
-IOSCHED=maple
+GLVL=8
+GFREQ=133333333
+IOSCHED=cfq
 elif [ $INTERACTIVE == 2 ]; then
 TLS="80 1017600:85 1190400:99"
 TLB="90 1056600:99"
@@ -43,10 +41,8 @@ ABST=0
 TBST=0
 GHLS=99
 GHLB=99
-SWAP=20
-VFS=40
-GLVL=6
-GFREQ=266666667
+GLVL=8
+GFREQ=133333333
 IOSCHED=noop
 elif [ $INTERACTIVE == 3 ]; then
 TLS="40 1017600:50 1190400:60 1305600:70 1382400:75 1401600:80"
@@ -59,18 +55,16 @@ HSFB=1382400
 FMS=691200
 FMB=883200
 FMAS=1401600
-FMAB=1804800
+FMAB=2035200
 TR=20000
 AID=N
 ABST=1
 TBST=1
 GHLS=80
 GHLB=85
-SWAP=30
-VFS=100
 GLVL=6
 GFREQ=266666667
-IOSCHED=maple
+IOSCHED=zen
 fi
 DT2W=$(cat /tmp/aroma/dt2w.prop | cut -d '=' -f2)
 if [ $DT2W == 1 ]; then
@@ -106,17 +100,12 @@ echo "write /dev/cpuset/background/cpus 0-5" >> $CONFIGFILE
 echo "write /dev/cpuset/system-background/cpus 0-5" >> $CONFIGFILE
 echo "write /dev/cpuset/top-app/cpus 0-5" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "# Enable sched boost" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_boost 1" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "on property:init.svc.vendor.qcom-post-boot=stopped" >> $CONFIGFILE
+echo "on property:kernel.tweaks.run_now=1" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# SWAPPINESS AND VFS CACHE PRESSURE" >> $CONFIGFILE
-echo "write /proc/sys/vm/swappiness $SWAP" >> $CONFIGFILE
-echo "write /proc/sys/vm/vfs_cache_pressure $VFS" >> $CONFIGFILE
+echo "write /proc/sys/vm/swappiness 30" >> $CONFIGFILE
+echo "write /proc/sys/vm/vfs_cache_pressure 100" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "# Disable sched boost" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE
 if [ $DT2W -ne 4 ]; then
 echo "" >> $CONFIGFILE
 echo "# DT2W" >> $CONFIGFILE
@@ -177,38 +166,38 @@ echo "write /sys/devices/system/cpu/cpu5/online 1" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# TWEAK A53 CLUSTER GOVERNOR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor \"interactive\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load $GHLS" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq $HSFS" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads \"$TLS\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 50000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor \"darkness\"" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/above_hispeed_delay 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/go_hispeed_load $GHLS" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/timer_rate $TR" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/timer_slack -1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/hispeed_freq $HSFS" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/io_is_busy 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/use_migration_notif 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/use_sched_load 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/target_loads \"$TLS\"" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/min_sample_time 50000" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq $FMS" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq $FMAS" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 166667" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/darkness/max_freq_hysteresis 166667" >> $CONFIGFILE
 
 echo "" >> $CONFIGFILE
 echo "# TWEAK A72 CLUSTER GOVERNOR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/online 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor \"interactive\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load $GHLB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack -1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq $HSFB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads \"$TLB\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 30000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor \"darkness\"" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/above_hispeed_delay 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/go_hispeed_load $GHLB" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/timer_rate $TR" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/timer_slack -1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/hispeed_freq $HSFB" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/io_is_busy 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/use_migration_notif 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/use_sched_load 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/target_loads \"$TLB\"" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/min_sample_time 30000" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq $FMB" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq $FMAB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 20000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/darkness/max_freq_hysteresis 20000" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# GPU SETTINGS" >> $CONFIGFILE
 echo "write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel $GLVL" >> $CONFIGFILE
@@ -247,8 +236,8 @@ echo "# android background processes are set to nice 10. Never schedule these on
 echo "write /proc/sys/kernel/sched_upmigrate_min_nice 9" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_window_stats_policy 2" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_ravg_hist_size 5" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_freq_inc_notify 10485760" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_freq_dec_notify 10485760" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_freq_inc_notify 400000" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_freq_dec_notify 400000" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_enable_power_aware 0" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_enable_colocation 1" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_cpu_high_irqload 10000000" >> $CONFIGFILE
@@ -335,9 +324,12 @@ echo "" >> $CONFIGFILE
 echo "# Reconfigure cpuset to optimum values" >> $CONFIGFILE
 echo "write /dev/cpuset/foreground/cpus 0-4" >> $CONFIGFILE
 echo "write /dev/cpuset/foreground/boost/cpus 4-5" >> $CONFIGFILE
-echo "# Enable 2 cores for background to improve app switching and usability" >> $CONFIGFILE
-echo "write /dev/cpuset/background/cpus 0-1" >> $CONFIGFILE
+echo "# Enable all lil cores for background to improve app switching and usability" >> $CONFIGFILE
+echo "write /dev/cpuset/background/cpus 0-3" >> $CONFIGFILE
 echo "write /dev/cpuset/system-background/cpus 0-3" >> $CONFIGFILE
 echo "write /dev/cpuset/top-app/cpus 0-5" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "write /sys/module/zswap/parameters/enabled 0" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# Disable sched boost" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE
