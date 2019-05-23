@@ -332,4 +332,4 @@ echo "" >> $CONFIGFILE
 echo "write /sys/module/zswap/parameters/enabled 0" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "# Disable sched boost" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_boost 0" >> $CONFIGFILE      
