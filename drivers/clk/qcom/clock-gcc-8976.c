@@ -1304,7 +1304,8 @@ static struct clk_freq_tbl ftbl_gfx3d_clk_src[] = {
 	F( 432000000,    gpll6_gfx3d,  2.5,    0,     0),
 	F( 480000000,    gpll4_gfx3d,  2.5,    0,     0),
 	F( 550000000,          gpll3,    2,    0,     0),
-	F( 600000000,    gpll4_gfx3d,    2,    0,     0),
+	F( 621330000,    gpll4_gfx3d,    2,    0,     0),
+	F( 710000000,    gpll2_gfx3d,  1.5,    0,     0),
 	F_END
 };
 
@@ -2565,7 +2566,7 @@ static struct branch_clk gcc_oxili_gfx3d_clk = {
 		.parent = &gfx3d_clk_src.c,
 		VDD_DIG_FMAX_MAP5(LOWER, 300000000, LOW, 366670000,
 				NOMINAL, 432000000, NOM_PLUS, 480000000,
-				HIGH, 600000000),
+				HIGH, 710000000),
 		.ops = &clk_ops_branch,
 		CLK_INIT(gcc_oxili_gfx3d_clk.c),
 	},
@@ -4079,3 +4080,4 @@ static int __init msm_gcc_gfx_init(void)
 	return platform_driver_register(&msm_clock_gcc_gfx_driver);
 }
 arch_initcall_sync(msm_gcc_gfx_init);
+
