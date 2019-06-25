@@ -20,17 +20,19 @@
     if [ $MemTotal -gt 2000000 ]; then
         echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
         echo "18432,23040,27648,32256,55296,80640" > /sys/module/lowmemorykiller/parameters/minfree
+        echo 45 > /proc/sys/vm/swappiness
     else
         echo 0 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
         echo "16384,20992,24064,30720,46080,66560" > /sys/module/lowmemorykiller/parameters/minfree
-	echo 10 > /proc/sys/vm/dirty_background_ratio
+	    echo 100 > /proc/sys/vm/swappiness
+        echo 10 > /proc/sys/vm/dirty_background_ratio
     fi
-
-	Mode=`cat /init.radon.rc | grep zrammode`
-	Mo=${Mode:11:1}
-	if [ $Mo -eq 1 ] || [ $Mo -eq 3 ]; then
-	echo 536870912 > /sys/block/zram0/disksize
+    
+	swapoff /dev/block/zram0  > /dev/null 2>&1
+    echo 1 > /sys/block/zram0/reset
+	echo 805306368 > /sys/block/zram0/disksize
 	mkswap /dev/block/zram0
 	swapon /dev/block/zram0
 	fi
+	
 	

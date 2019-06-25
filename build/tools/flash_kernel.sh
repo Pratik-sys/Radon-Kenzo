@@ -48,22 +48,12 @@ if [ $ftfw -eq 1 ]; then
 cmd=$cmd" androidboot.ft5346.flash=force"
 fi
 if [ $therm -eq 1 ]; then
-echo "Using old thermal engine"
-cp -rf /tmp/old-thermal/* /system/vendor/
-chmod 0755 /system/vendor/bin/thermal-engine
-chmod 0644 /system/vendor/lib/libthermalclient.so
-chmod 0644 /system/vendor/lib64/libthermalclient.so
-chmod 0644 /system/vendor/lib64/libthermalioctl.so
+echo "Using saxy thermal config"
+cp -rf /tmp/thermal/thermal-engine.conf /system/vendor/etc
+chmod 0644 /system/vendor/etc/thermal-engine.conf
 fi
 cp /tmp/radon.sh /system/etc/radon.sh
 chmod 0755 /system/etc/radon.sh
-cp -rf /tmp/thermal-engine.conf /system/vendor/etc
-chmod 0644 /system/vendor/etc/thermal-engine.conf
-cp -rf /tmp/init.qcom.post_boot.sh /system/vendor/bin
-chmod 0755 /system/vendor/bin/init.qcom.post_boot.sh
-if [ $(grep -c "setprop kernel.tweaks.run_now 1" /system/vendor/bin/init.qcom.post_boot.sh) == 0 ]; then
-	echo "setprop kernel.tweaks.run_now 1" >> /system/vendor/bin/init.qcom.post_boot.sh
-fi
 cp -f /tmp/cpio /sbin/cpio
 cd /tmp/
 /sbin/busybox dd if=/dev/block/bootdevice/by-name/boot of=./boot.img
@@ -75,10 +65,12 @@ gunzip -c /tmp/ramdisk/boot.img-ramdisk.gz | /tmp/cpio -i
 rm /tmp/ramdisk/boot.img-ramdisk.gz
 rm /tmp/boot.img-ramdisk.gz
 cp /tmp/init.radon.rc /tmp/ramdisk/
+cp /tmp/init.radon.sh /tmp/ramdisk/
 # ADD SPECTRUM SUPPORT
 cp /tmp/init.spectrum.rc /tmp/ramdisk/
 cp /tmp/init.spectrum.sh /tmp/ramdisk/
 chmod 0750 /tmp/ramdisk/init.spectrum.rc
+chmod 0755 /tmp/ramdisk/init.spectrum.sh
 if [ $(grep -c "import /init.spectrum.rc" /tmp/ramdisk/init.rc) == 0 ]; then
    sed -i "/import \/init\.\${ro.hardware}\.rc/aimport /init.spectrum.rc" /tmp/ramdisk/init.rc
 fi
@@ -99,6 +91,7 @@ if [ -f /tmp/ramdisk/init.darkness.rc ]; then
 rm /tmp/ramdisk/init.darkness.rc
 fi
 chmod 0750 /tmp/ramdisk/init.radon.rc
+chmod 0755 /tmp/ramdisk/init.radon.sh
 if [ $(grep -c "import /init.radon.rc" /tmp/ramdisk/init.rc) == 0 ]; then
    sed -i "/import \/init\.\${ro.hardware}\.rc/aimport /init.radon.rc" /tmp/ramdisk/init.rc
 fi
