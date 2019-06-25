@@ -1,8 +1,8 @@
 ini_set("rom_name",             "Radon");
-ini_set("rom_version",          "V6.3-rebuild-7.5");
+ini_set("rom_version",          "V6.3-rebuild-7.6");
 ini_set("rom_author",           "Umang96 & Pzqqt & Pratik");
 ini_set("rom_device",           "Kenzo");
-ini_set("rom_date",             "2019.05.17");
+ini_set("rom_date",             "2019.06.25");
 
 ini_set("force_colorspace","rgba");
 #ini_set("dp","6");
@@ -37,9 +37,6 @@ viewbox(
   
 <b>ChangeLog</b>
 
-  1.Rebuild with Linaro 6.4.1
-  2.Added ZEN tune
-  3.Overclock big cluster to 2GHz 
 ",
   "@welcome"
 );
