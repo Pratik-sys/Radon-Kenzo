@@ -1,0 +1,6 @@
+on property:sys.boot_completed=1
+    # according to Qcom this legacy value improves first launch latencies
+    # stock value is 512k
+    setprop dalvik.vm.heapminfree 2m
+
+    exec u:r:magisk:s0 root root -- /init.radon.sh

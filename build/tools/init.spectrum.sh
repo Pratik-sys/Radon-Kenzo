@@ -25,7 +25,7 @@ if [[ $value -eq 0 ]]; then
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 100
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1478400
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "50 1017600:60 1190400:70 1305600:80 1382400:90 1478400:95"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "40 1017600:50 1190400:60 1305600:70 1382400:80 1478400:85"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1843200
@@ -33,7 +33,7 @@ if [[ $value -eq 0 ]]; then
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "85 1382400:90 1747200:95"
-    write /sys/kernel/cpu_input_boost/enabled 1
+    write /sys/kernel/cpu_input_boost/enabled 0
 	write /sys/kernel/cpu_input_boost/ib_freqs "1190400 883200"
 	write /sys/kernel/cpu_input_boost/ib_duration_ms 100
     write /sys/module/adreno_idler/parameters/adreno_idler_active N
@@ -73,8 +73,8 @@ elif [[ $value -eq 1 ]]; then
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel 7
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_pwrlevel 7
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq 266666667
-    write /sys/block/mmcblk0/queue/scheduler fiops
-    write /sys/block/mmcblk1/queue/scheduler fiops
+    write /sys/block/mmcblk0/queue/scheduler zen
+    write /sys/block/mmcblk1/queue/scheduler zen
     write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 1
 elif [[ $value -eq 2 ]]; then
     write /sys/devices/system/cpu/cpu0/online 1
@@ -132,7 +132,7 @@ else [[ $value -eq 3 ]];
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/default_pwrlevel 7
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_pwrlevel 7
 	write /sys/devices/soc.0/1c00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq 266666667
-    write /sys/block/mmcblk0/queue/scheduler fiops
-    write /sys/block/mmcblk1/queue/scheduler fiops
+    write /sys/block/mmcblk0/queue/scheduler zen
+    write /sys/block/mmcblk1/queue/scheduler zen
 	write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 2
 fi

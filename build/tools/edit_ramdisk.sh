@@ -3,9 +3,9 @@
 CONFIGFILE="/tmp/init.radon.sh"
 INTERACTIVE=$(cat /tmp/aroma/interactive.prop | cut -d '=' -f2)
 if [ $INTERACTIVE == 1 ]; then
-TLS="50 1017600:60 1190400:70 1305600:80 1382400:90 1478400:95"
-TLB="85 1382400:90 1747200:95"
-BOOSTENB=1
+TLS="40 1017600:50 1190400:60 1305600:70 1382400:80 1478400:85"
+TLB="50 940800:70 1190400:85 1382400:90 1747200:95"
+BOOSTENB=0
 BOOST="1190400 883200"
 BOOSTMS=100
 HSFS=1478400
@@ -49,7 +49,7 @@ GFREQ=200000000
 GMAX=432000000
 IOSCHED=noop
 elif [ $INTERACTIVE == 3 ]; then
-TLS="40 1017600:50 1190400:60 1305600:70 1382400:80 1478400:90"
+TLS="40 1017600:50 1190400:60 1305600:70 1382400:80 1478400:85"
 TLB="75 1382400:80 1747200:85"
 BOOSTENB=1
 BOOST="1305600 998400"
@@ -70,7 +70,7 @@ GLVL=7
 GLVLD=7
 GFREQ=266666667
 GMAX=710000000
-IOSCHED=fiops
+IOSCHED=zen
 fi
 DT2W=$(cat /tmp/aroma/dt2w.prop | cut -d '=' -f2)
 if [ $DT2W == 1 ]; then
@@ -166,7 +166,7 @@ echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 1" >> $C
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads \"$TLS\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq $FMS" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq $FMAS" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
@@ -177,11 +177,11 @@ echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load $GHLB" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate $TR" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq $HSFB" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 1" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads \"$TLB\"" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 0" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq $FMB" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq $FMAB" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
@@ -218,29 +218,15 @@ echo "write /proc/sys/kernel/sched_shadow_upmigrate 85" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_shadow_downmigrate 80" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_upmigrate_min_nice 9" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_freq_inc_notify 200000" >> $CONFIGFILE
-echo "write /proc/sys/kernel/sched_freq_dec_notify 20000" >> $CONFIGFILE
+echo "write /proc/sys/kernel/sched_freq_dec_notify 200000" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_enable_power_aware 0" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_small_task 30" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_nr_run 6" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "write /sys/class/devfreq/mincpubw/governor \"cpufreq\"" >> $CONFIGFILE
 echo "write /sys/class/devfreq/cpubw/governor \"bw_hwmon\"" >> $CONFIGFILE
 echo "write /sys/class/devfreq/cpubw/bw_hwmon/io_percent 20" >> $CONFIGFILE
 echo "write /sys/class/devfreq/cpubw/bw_hwmon/guard_band_mbps 30" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_load 25" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu1/sched_mostly_idle_load 25" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu2/sched_mostly_idle_load 25" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu3/sched_mostly_idle_load 25" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_load 25" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu5/sched_mostly_idle_load 25" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "write /sys/module/lpm_levels/parameters/lpm_prediction 1" >> $CONFIGFILE
@@ -261,7 +247,7 @@ echo "write /proc/sys/kernel/sched_grp_downmigrate 110" >> $CONFIGFILE
 echo "write /proc/sys/kernel/sched_enable_thread_grouping 1" >> $CONFIGFILE
 echo " " >> $CONFIGFILE
 echo "" >> $CONFIGFILE
-echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_freq 0" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/sched_mostly_idle_freq 1017600" >> $CONFIGFILE
 echo "write /sys/devices/system/cpu/cpu4/sched_mostly_idle_freq 0" >> $CONFIGFILE
 echo " " >> $CONFIGFILE
 echo "" >> $CONFIGFILE
@@ -273,13 +259,13 @@ echo " " >> $CONFIGFILE
 echo "" >> $CONFIGFILE
 echo "setprop sys.io.scheduler \"$IOSCHED\"" >> $CONFIGFILE
 echo "write /sys/block/mmcblk0/queue/scheduler $IOSCHED" >> $CONFIGFILE
-echo "write /sys/block/mmcblk0/queue/iostats 0" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/iostats 1" >> $CONFIGFILE
 echo "write /sys/block/mmcblk0/queue/nr_requests 128" >> $CONFIGFILE
-echo "write /sys/block/mmcblk0/queue/read_ahead_kb 128" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/read_ahead_kb 256" >> $CONFIGFILE
 echo "write /sys/block/mmcblk1/queue/scheduler $IOSCHED" >> $CONFIGFILE
-echo "write /sys/block/mmcblk1/queue/iostats 0" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/iostats 1" >> $CONFIGFILE
 echo "write /sys/block/mmcblk1/queue/nr_requests 128" >> $CONFIGFILE
-echo "write /sys/block/mmcblk1/queue/read_ahead_kb 128" >> $CONFIGFILE
+echo "write /sys/block/mmcblk1/queue/read_ahead_kb 256" >> $CONFIGFILE
 echo " " >> $CONFIGFILE
 echo " " >> $CONFIGFILE
 echo "write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250" >> $CONFIGFILE
