@@ -101,3 +101,4 @@ build/tools/Image*
 !build/tools/gxfingerprint.default.so
 !build/tools/old-thermal/lib/*
 !build/tools/old-thermal/lib64/*
+.vscode
