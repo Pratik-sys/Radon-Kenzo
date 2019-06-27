@@ -36,7 +36,11 @@ viewbox(
   "\n\n\n\n
   
 <b>ChangeLog</b>
-
+  * 1000hz tickrate
+  * tuned interactive for less jitter
+  * some logging disabled
+  * fixed the 1000hz tickrate
+  
 ",
   "@welcome"
 );
@@ -106,9 +110,9 @@ selectbox(
 );
 
 selectbox(
-  "\n\nThermal engine","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
-  "Yes, old thermal","",0,
-  "No, new thermal","",1
+  "\n\nThermal config","<@center><b>\n\n\n\n\n\n\nIf you want to enjoy saxy gaming performance it is recommended to select yes here.\n</b></@>","","thermal.prop",
+  "Yes, use saxy thermal config","",0,
+  "No, the stock thing is good enough","",1
 );
 
 menubox(
