@@ -70,6 +70,13 @@ gunzip -c /tmp/ramdisk/boot.img-ramdisk.gz | /tmp/cpio -i
 rm /tmp/ramdisk/boot.img-ramdisk.gz
 rm /tmp/boot.img-ramdisk.gz
 cp /tmp/init.radon.rc /tmp/ramdisk/
+# ADD SPECTRUM SUPPORT
+cp /tmp/init.spectrum.rc /tmp/ramdisk/
+cp /tmp/init.spectrum.sh /tmp/ramdisk/
+chmod 0750 /tmp/ramdisk/init.spectrum.rc
+if [ $(grep -c "import /init.spectrum.rc" /tmp/ramdisk/init.rc) == 0 ]; then
+   sed -i "/import \/init\.\${ro.hardware}\.rc/aimport /init.spectrum.rc" /tmp/ramdisk/init.rc
+fi
 # COMPATIBILITY FIXES START
 cp /tmp/init.qcom.post_boot.sh /system/etc/init.qcom.post_boot.sh
 chmod 644 /system/etc/init.qcom.post_boot.sh
