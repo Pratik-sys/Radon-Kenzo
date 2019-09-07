@@ -70,7 +70,7 @@ cp $KERNEL_DIR/arch/arm64/boot/Image $KERNEL_DIR/build/tools/Image1
 cd $KERNEL_DIR/build
 rm *.zip > /dev/null 2>&1
 echo -e "$yellow\n Build succesful, generating flashable zip now \n $white"
-zip -r Radon-Kenzo-Cm-Or.zip * > /dev/null
+zip -r Radon-Kenzo-pie.zip * > /dev/null
 End=$(date +"%s")
 Diff=$(($End - $Start))
 echo -e "$yellow $KERNEL_DIR/build/Radon-Kenzo-pie.zip \n$white"
