@@ -1,6 +1,6 @@
 ini_set("rom_name",             "Radon");
 ini_set("rom_version",          "V6.3-rebuild-7.1");
-ini_set("rom_author",           "Umang96 & Pzqqt");
+ini_set("rom_author",           "Umang96 & Pzqqt & Pratik");
 ini_set("rom_device",           "Kenzo");
 ini_set("rom_date",             "2018.11.29");
 
@@ -37,17 +37,7 @@ viewbox(
   
 <b>What's new?</b>
 
-  1.Rebuild with Linaro 6.4.1
-  2.Support new device tree
-  3.New jack detection
-  4.Netlink mode select
-  5.Fixed for replaced focaltech touchscreen devices
-  6.Initial import of DTS-Eagle driver
-  7.Import wireguard driver
-  8.Support Treble Roms
-  9.Disable some tracing(Thanks to psndna88)
-  10.Added Cultivation & Darkness CPU Governor
-  11.Other some optimizations
+
 ",
   "@welcome"
 );
@@ -55,7 +45,7 @@ viewbox(
 selectbox(
   "\n\nWhich type of Rom are you using?","<@center><b>\n\n\n\n\n\n\nPlease choose the correct one.\n</b></@>","","pt.prop",
   "I‘m using Treble Rom","",0,
-  "I‘m using Normal Oreo Rom","",1
+  "I‘m using Normal Pie Rom","",1
 );
 
 selectbox(
