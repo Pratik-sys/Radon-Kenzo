@@ -1,6 +1,6 @@
 #!/sbin/sh
  #
- # Copyright © 2017, Umang Leekha "umang96" <umangleekha3@gmail.com> 
+ # Copyright ï¿½ 2017, Umang Leekha "umang96" <umangleekha3@gmail.com> 
  #
  # Live ramdisk patching script
  #
@@ -48,16 +48,11 @@ if [ $ftfw -eq 1 ]; then
 cmd=$cmd" androidboot.ft5346.flash=force"
 fi
 if [ $therm -eq 1 ]; then
-echo "Using old thermal engine"
-cp -rf /tmp/old-thermal/* /system/vendor/
-chmod 0755 /system/vendor/bin/thermal-engine
-chmod 0644 /system/vendor/lib/libthermalclient.so
-chmod 0644 /system/vendor/lib64/libthermalclient.so
-chmod 0644 /system/vendor/lib64/libthermalioctl.so
+echo "Using saxy thermals + pubg config"
+cp -rf /tmp/saxy-thermals/* /system/vendor/etc/
+chmod 0644 /system/vendor/etc/thermal-engine.conf
 fi
-if ! [ -f /system/etc/radon.sh ]; then
 cp /tmp/radon.sh /system/etc/radon.sh
-fi
 chmod 644 /system/etc/radon.sh
 cp -f /tmp/cpio /sbin/cpio
 cd /tmp/
@@ -78,8 +73,6 @@ if [ $(grep -c "import /init.spectrum.rc" /tmp/ramdisk/init.rc) == 0 ]; then
    sed -i "/import \/init\.\${ro.hardware}\.rc/aimport /init.spectrum.rc" /tmp/ramdisk/init.rc
 fi
 # COMPATIBILITY FIXES START
-cp /tmp/init.qcom.post_boot.sh /system/etc/init.qcom.post_boot.sh
-chmod 644 /system/etc/init.qcom.post_boot.sh
 if [ -f /tmp/ramdisk/fstab.qcom ];
 then
 if ([ "`grep "context=u:object_r:firmware_file:s0" /tmp/ramdisk/fstab.qcom`" ]);
