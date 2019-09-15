@@ -31,17 +31,6 @@ alert(
   "OK"
 );
 
-viewbox(
-  "<@center>\n\nNotice</@>",
-  "\n\n\n\n
-  
-<b>What's new?</b>
-
-
-",
-  "@welcome"
-);
-
 selectbox(
   "\n\nWhich type of Rom are you using?","<@center><b>\n\n\n\n\n\n\nPlease choose the correct one.\n</b></@>","","pt.prop",
   "I‘m using Treble Rom","",0,
@@ -107,9 +96,9 @@ selectbox(
 );
 
 selectbox(
-  "\n\nWant old thermal engine ?","<@center><b>\n\n\n\n\n\n\nIf you have any slow charging issue then only it is recommended to select yes here.\n</b></@>","","thermal.prop",
-  "Yes, old thermal","",0,
-  "No, new thermal","",1
+  "\n\nWant saxy thermals config ?","<@center><b>\n\n\n\n\n\n\nSelect yes if you want good pubg and ux performance, and aren't worried about a bit more battery consumption and a hotter device.\n</b></@>","","thermal.prop",
+  "Yes, I want moar performance!","",0,
+  "No, fuck you and your config.","",1
 );
 
 menubox(
